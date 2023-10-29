@@ -4,24 +4,23 @@ import cx from 'clsx';
 import { isFn } from '../utils/propValidator';
 import { getIcon } from './Icons';
 
-export const Toast = ({
-    messages,
-    type,
-    position = "top-right",
-    className,
-    toastId,
-    visible,
-    icon,
-    updateHeightToast,
-    offset,
-    ...toastData
-}) => {
+export const Toast = (toastData) => {
+    const {
+        type,
+        position = "top-right",
+        className,
+        toastId,
+        visible,
+        updateHeightToast,
+        offset,
+    } = toastData
     const toastRef = useCallback(el => {
         if (el) {
             const height = el.getBoundingClientRect().height;
             updateHeightToast(toastId, height);
         }
     }, [toastId])
+    // const offset = calculateOffset(toastData)
     const defaultClassName = cx(`athens-toast`, `athens-toast-${type}`);
     const cssClasses = isFn(className) ? className({ position, type, defaultClassName }) : cx(defaultClassName, className);
     const direction = position ? (position.includes("right") ? 'right' : position && position.includes("left") ? 'left' : 'center') : 'right';

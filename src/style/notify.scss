@@ -48,6 +48,7 @@ $background: #181818;
             height: 100%;
             background: linear-gradient(to right, var(--color) 30%, transparent);
             opacity: .3;
+            border-radius: 0.8vmin;
         }
 
         .toast-icon {

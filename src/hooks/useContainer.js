@@ -1,19 +1,14 @@
-import { cloneElement, isValidElement, useEffect, useReducer, useRef, useState } from "react";
-import { getIcon } from "../components/Icons";
+import { isValidElement, useCallback, useEffect, useReducer, useRef, useState } from "react";
 import { eventManager } from "../core/eventManager"
-import { canBeRendered, isStr } from "../utils/propValidator";
 import { toast as TOASTS } from "../core/toast";
-import { useDispatch, useSelector } from "react-redux";
-import { ADD_TOAST, CLEAR_TOAST, REMOVE_TOAST, UPDATE_TOAST } from "../store/reducers";
+import { ADD_TOAST, REMOVE_TOAST, UPDATE_TOAST } from "../store/store";
+import { useStore } from "../store/store";
 
 export function useToastContainer(props) {
-    const AlertSound = document.querySelector("#alert");
-    const dispatch = useDispatch();
     const [, forceUpdate] = useReducer(x => x + 1, 0);
-    const [toastIds, setToastIds] = useState([]);
     const containerRef = useRef(null);
-    const toastToRender = useSelector(state => state.toasts);
-    const isToastActive = (id) => toastToRender[id]?.visible;
+    const toasts = useStore().toasts;
+    const isToastActive = (id) => toasts.find(t => t.toastId === id)?.visible;
     const instance = useRef({
         toastKey: 1,
         displayedToast: 0,
@@ -22,11 +17,10 @@ export function useToastContainer(props) {
         props,
         containerId: null,
         isToastActive,
-        getToast: id => toastToRender[id]
+        getToast: id => toasts.find(t => t.toastId === id)
     }).current;
 
     useEffect(() => {
-        AlertSound.volume = 0.2
         instance.containerId = props.containerId;
         eventManager
             .cancelEmit("WillUnmount")
@@ -44,8 +38,8 @@ export function useToastContainer(props) {
     useEffect(() => {
         instance.props = props;
         instance.isToastActive = isToastActive;
-        instance.displayedToast = toastIds.length;
-    }, [props, isToastActive, toastIds]);
+        instance.displayedToast = toasts.length;
+    }, [props, isToastActive, toasts]);
 
     function clearWaitingQueue({ containerId }) {
         const { limit } = instance.props;
@@ -57,16 +51,14 @@ export function useToastContainer(props) {
     }
 
     function DismissToast(toastId) {
-        dispatch(UPDATE_TOAST({
+        UPDATE_TOAST({
             toastId,
             visible: false,
-        }))
-
-        setToastIds(toastIds);
+        })
     }
 
     function removeToast(toastId) {
-        dispatch(REMOVE_TOAST(toastId));
+        REMOVE_TOAST(toastId);
 
         const queueLen = instance.queue.length;
         instance.count = toastId == null ? instance.count - instance.displayedToast : instance.count - 1;
@@ -88,7 +80,6 @@ export function useToastContainer(props) {
         } else {
             forceUpdate();
         }
-        setToastIds(state => toastId == null ? [] : state.filter(id => id !== toastId));
     }
 
     function dequeueToast() {
@@ -102,6 +93,7 @@ export function useToastContainer(props) {
         const { toastId } = options;
         const { props } = instance;
         instance.count++;
+
         let toast = {
             // ...props,
             position: props.position,
@@ -125,23 +117,17 @@ export function useToastContainer(props) {
     function appendToast(
         toastProps
     ) {
-        const clickSound = new Audio('./sound/alert.mp3');
-        clickSound.volume = 0.15;
-        clickSound.play().catch(() => {});
-        // AlertSound.play();
         const { toastId } = toastProps;
         const toast = {
             ...toastProps,
-            visible: true
+            visible: false
         };
 
-        dispatch(ADD_TOAST({
+        ADD_TOAST({
             toastId,
             toast
-        }));
+        });
 
-        setToastIds(state => [...state, toastId]);
-        
         setTimeout(() => TOASTS.dismiss(toastId), toast.duration)
     }
 
@@ -149,15 +135,17 @@ export function useToastContainer(props) {
         toastId,
         height
     ) {
-        dispatch(UPDATE_TOAST({
+        UPDATE_TOAST({
             toastId,
-            height
-        }));
+            height,
+            visible: true
+        });
     }
 
-    function getToastToRender(cb) {
+    const getToastToRender = cb => {
         const toRender = new Map();
-        const collection = Object.values(toastToRender);
+        const collection = toasts;
+        console.log(toasts)
         collection.reverse();
 
         collection.forEach(toast => {
@@ -169,9 +157,23 @@ export function useToastContainer(props) {
         return Array.from(toRender, p => cb(p[0], p[1]));
     }
 
+    const calculateOffset = useCallback(toast => {
+        const relevantToasts = toasts.filter(t => t.height && (t?.position || "top-right") === toast?.position || "top-right");
+        const toastIndex = relevantToasts.findIndex((t) => t.toastId === toast.toastId);
+        const toastsBefore = relevantToasts.filter((t, i) => i < toastIndex && t.visible).length;
+
+        const offset = relevantToasts
+            .filter((t) => t.visible)
+            .slice(0, toastsBefore)
+            .reduce((acc, t) => acc + (t.height || 0) + 8, 0);
+
+        return offset
+    }, [toasts])
+
     return {
         getToastToRender,
         containerRef,
         updateHeightToast,
+        calculateOffset,
     };
 }

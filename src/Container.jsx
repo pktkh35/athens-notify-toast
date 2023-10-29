@@ -1,11 +1,11 @@
 import cx from 'clsx';
 import { useToastContainer } from "./hooks/useContainer";
 import { Toast } from "./components/Toast";
-import { useSelector } from 'react-redux';
+import { useCallback } from 'react';
+import { useStore } from './store/store';
 
 const Container = (props) => {
-    const toastToRender = useSelector(state => state.toasts);
-    const { getToastToRender, containerRef, updateHeightToast } = useToastContainer({
+    const { getToastToRender, containerRef, updateHeightToast, calculateOffset } = useToastContainer({
         position: 'top-right',
         duration: 5000,
         role: 'alert',
@@ -26,29 +26,16 @@ const Container = (props) => {
         ref={containerRef}
     >
         {getToastToRender((position, toastList) => {
-            const calculateOffset = toast => {
-                const relevantToasts = toastList.filter(t => t.height);
-                const toastIndex = relevantToasts.findIndex(t => t.toastId === toast.toastId);
-                const toastsBefore = relevantToasts.filter((t, i) => i < toastIndex && t.visible).length;
 
-                const offset = relevantToasts
-                    .filter((t) => t.visible)
-                    .slice(0, toastsBefore)
-                    .reduce((acc, t) => acc + (t.height || 0) + 8, 0);
-
-                return offset
-            }
             return <div
                 className={getClassName(position)}
                 key={`container-${position}`}
             >
-                {toastList.map((toastProps, i) => {
-                    const offset = calculateOffset(toastProps)
+                {toastList.map((t) => ({ ...t, offset: calculateOffset(t) })).map((toastProps, i) => {
                     return <Toast
                         {...toastProps}
                         key={`toast-${toastProps.key}`}
                         updateHeightToast={updateHeightToast}
-                        offset={offset}
                     />
                 })}
             </div>

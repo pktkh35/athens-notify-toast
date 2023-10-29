@@ -1,5 +1,5 @@
 {
-  "name": "athens-notify-ui",
+  "name": "athens-notify-toast",
   "private": true,
   "version": "0.0.0",
   "type": "module",
