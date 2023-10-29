@@ -1,0 +1,78 @@
+$rt-namespace: "athens-";
+$offset: 2vmin;
+$background: #181818;
+
+.athens-container {
+    position: fixed;
+    z-index: 9999;
+    pointer-events: none;
+    font-size: 1.4vmin;
+    top: $offset;
+    right: $offset;
+}
+
+.athens-toast {
+    position: absolute;
+    left: 0;
+    right: 0;
+    display: flex;
+    transition: all 230ms cubic-bezier(.21,1.02,.73,1);
+
+    &.athens-toast-success {
+        --color: #74B96E;
+    }
+    &.athens-toast-error {
+        --color: #b96e6e;
+    }
+
+    &.athens-toast-warning {
+        --color: #B9A86E;
+    }
+
+    .toast-content {
+        position: relative;
+        background-color: rgb(24, 24, 24);
+        min-width: 25vmin;
+        padding: 1.5vmin;
+        border-radius: 0.8vmin;
+        display: grid;
+        gap: 1vmin;
+        grid-template-columns: 2vmin auto;
+
+        &::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, var(--color) 30%, transparent);
+            opacity: .3;
+        }
+
+        .toast-icon {
+            position: relative;
+            align-self: flex-start;
+            justify-content: center;
+            width: 2vmin;
+
+            svg {
+                margin-top: 1vmin;
+                fill: white;
+                width: 100%;
+                height: 100%;
+            }
+        }
+
+        .toast-info {
+            position: relative;
+            align-self: center;
+
+            div:first-child {
+                opacity: .6;
+            }
+        }
+    }
+}
+
+@import "animation";

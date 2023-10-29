@@ -1,0 +1,18 @@
+
+@import url("https://fonts.googleapis.com/css2?family=Athiti&display=swap");
+@import url("https://kit-pro.fontawesome.com/releases/v6.4.0/css/pro.min.css");
+
+* {
+    font-family: "Athiti", sans-serif;
+    font-weight: 300;
+    margin: 0;
+    padding: 0;
+    color: white;
+    font-size: 1.6vmin;
+
+    user-select: none;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-font-smoothing: antialiased !important;
+    text-rendering: optimizelegibility !important;
+}
