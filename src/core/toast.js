@@ -89,7 +89,7 @@ const addToRemoveQueue = (toastId) => {
   const timeout = setTimeout(() => {
     toastTimeouts.delete(toastId);
     eventManager.emit("Clear", toastId);
-  }, 230)
+  }, 300)
 
   toastTimeouts.set(toastId, timeout);
 };

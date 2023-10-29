@@ -145,8 +145,6 @@ export function useToastContainer(props) {
     const getToastToRender = cb => {
         const toRender = new Map();
         const collection = toasts;
-        console.log(toasts)
-        collection.reverse();
 
         collection.forEach(toast => {
             const position = toast?.position || "top-right";
@@ -158,13 +156,13 @@ export function useToastContainer(props) {
     }
 
     const calculateOffset = useCallback(toast => {
-        const relevantToasts = toasts.filter(t => t.height && (t?.position || "top-right") === toast?.position || "top-right");
+        const relevantToasts = toasts.filter(t => (t?.position || "top-right") === toast?.position || "top-right");
         const toastIndex = relevantToasts.findIndex((t) => t.toastId === toast.toastId);
         const toastsBefore = relevantToasts.filter((t, i) => i < toastIndex && t.visible).length;
 
         const offset = relevantToasts
             .filter((t) => t.visible)
-            .slice(0, toastsBefore)
+            .slice(toastsBefore+1)
             .reduce((acc, t) => acc + (t.height || 0) + 8, 0);
 
         return offset
