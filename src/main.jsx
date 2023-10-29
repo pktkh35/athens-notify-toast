@@ -4,11 +4,10 @@ import Container from './Container'
 import './style/test.scss'
 import './style/notify.scss'
 import { toast } from './core/toast'
-import Image from './components/Image'
 
 document.addEventListener("keyup", key => {
     toast({
-        icon: <div className="item-image"><Image src={`https://www.athens-groups.com/img/logo_nobg.png`} /></div>,
+        icon: <i class="fa-brands fa-x-twitter"></i>,
         description: "คุณได้รับ เงินสด จำนวน 15,000 LD",
         list: [
             {
@@ -41,7 +40,7 @@ document.addEventListener("keyup", key => {
             },
         ],
         position: "bottom-right",
-        type: "error",
+        type: "info",
         duration: 15000
     });
 })

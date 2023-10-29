@@ -79,11 +79,7 @@ export const Toast = (toastData) => {
     const direction = position ? (position.includes("right") ? 'right' : position && position.includes("left") ? 'left' : 'center') : 'right';
     const top = position.includes('top');
     const verticalStyle = top ? { top: 0 } : { bottom: 0 };
-    const horizontalStyle = position.includes('center') ? {
-        justifyContent: 'center',
-    } : position.includes('right') ? {
-        justifyContent: 'flex-end',
-    } : {};
+    const horizontalStyle = position.includes('center') ? { justifyContent: 'center' } : position.includes('right') ? { justifyContent: 'flex-end' } : {};
 
     return <div
         id={toastId}
