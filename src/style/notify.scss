@@ -72,6 +72,16 @@ $background: #181818;
             div:first-child {
                 opacity: .6;
             }
+
+            .toast-title {
+                font-size: 1.4vmin;
+                font-weight: bold;
+            }
+            
+            .toast-description {
+                font-size: 1.2vmin;
+            }
+            
         }
     }
 }
