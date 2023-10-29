@@ -7,8 +7,7 @@ $background: #181818;
     z-index: 9999;
     pointer-events: none;
     font-size: 1.4vmin;
-    top: $offset;
-    right: $offset;
+    inset: $offset;
 }
 
 .athens-toast {
@@ -16,38 +15,40 @@ $background: #181818;
     left: 0;
     right: 0;
     display: flex;
-    transition: all 230ms cubic-bezier(.21,1.02,.73,1);
+    transition: all 230ms cubic-bezier(0.21, 1.02, 0.73, 1);
+    --color: #3498db;
 
     &.athens-toast-success {
-        --color: #74B96E;
+        --color: #74b96e;
     }
+
     &.athens-toast-error {
         --color: #b96e6e;
     }
 
     &.athens-toast-warning {
-        --color: #B9A86E;
+        --color: #b9a86e;
     }
 
     .toast-content {
         position: relative;
         background-color: rgb(24, 24, 24);
         min-width: 25vmin;
-        padding: 1.5vmin;
+        padding: 1vmin 1.5vmin;
         border-radius: 0.8vmin;
         display: grid;
         gap: 1vmin;
         grid-template-columns: 2vmin auto;
 
         &::before {
-            content: '';
+            content: "";
             position: absolute;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
             background: linear-gradient(to right, var(--color) 30%, transparent);
-            opacity: .3;
+            opacity: 0.2;
             border-radius: 0.8vmin;
         }
 
@@ -55,7 +56,7 @@ $background: #181818;
             position: relative;
             align-self: flex-start;
             justify-content: center;
-            width: 2vmin;
+            min-width: 2vmin;
 
             svg {
                 margin-top: 1vmin;
@@ -69,20 +70,97 @@ $background: #181818;
             position: relative;
             align-self: center;
 
-            div:first-child {
-                opacity: .6;
-            }
-
             .toast-title {
                 font-size: 1.4vmin;
                 font-weight: bold;
+                opacity: 0.6;
             }
-            
+
             .toast-description {
-                font-size: 1.2vmin;
+                font-size: 1.15vmin;
             }
-            
         }
+    }
+}
+
+.toast-item-list {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    margin-left: 0.5vmin;
+
+    .item {
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+        margin-bottom: -.5vmin;
+
+        &.success {
+            --item-color: #74b96e;
+        }
+
+        &.error {
+            --item-color: #b96e6e;
+        }
+
+        &.warning {
+            --item-color: #b9a86e;
+        }
+
+        .text {
+            font-size: 1vmin;
+
+            span {
+                font-size: 1vmin;
+            }
+        }
+
+        .icon {
+            position: relative;
+            width: 1.2vmin;
+            margin-right: 0.2vmin;
+
+            &::after {
+                content: '';
+                position: absolute;
+                left: 20%;
+                top: 50%;
+                translate: 0 -50%;
+                width: 40%;
+                height: 30%;
+                background-color: white;
+                z-index: -1;
+                border-radius: 10vmin;
+            }
+
+            svg {
+                width: 80%;
+                height: 80%;
+                fill: var(--item-color);
+            }
+        }
+    }
+}
+
+.item-image {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    translate: -50% 0;
+    width: 2.75vmin;
+    height: 3vmin;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparentize($background, .8);
+    border-radius: 10vmin;
+
+    img {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        translate: -50% -50%;
+        width: 80%;
     }
 }
 

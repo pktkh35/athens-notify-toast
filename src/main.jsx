@@ -4,15 +4,45 @@ import Container from './Container'
 import './style/test.scss'
 import './style/notify.scss'
 import { toast } from './core/toast'
+import Image from './components/Image'
 
 document.addEventListener("keyup", key => {
-    const random = Math.floor(Math.random()*4);
-    const type = ["info","success","error","warning"][random]
     toast({
-        title: "ทดสอบ",
-        description: key.code,
-        type: type,
-        duration: 5000
+        icon: <div className="item-image"><Image src={`https://www.athens-groups.com/img/logo_nobg.png`} /></div>,
+        description: "คุณได้รับ เงินสด จำนวน 15,000 LD",
+        list: [
+            {
+                type: 'error',
+                label: "Stone",
+                countOld: 1,
+                count: 10,
+                itemtype: "item"
+            },
+            {
+                type: 'success',
+                label: "Iron Ore",
+                countOld: 20,
+                count: 25,
+                itemtype: "item"
+            },
+            {
+                type: 'error',
+                label: "Stone",
+                countOld: 1,
+                count: 10,
+                itemtype: "item"
+            },
+            {
+                type: 'success',
+                label: "Iron Ore",
+                countOld: 20,
+                count: 25,
+                itemtype: "item"
+            },
+        ],
+        position: "bottom-right",
+        type: "error",
+        duration: 15000
     });
 })
 
