@@ -156,7 +156,7 @@ export function useToastContainer(props) {
     }
 
     const calculateOffset = useCallback(toast => {
-        const relevantToasts = toasts.filter(t => (t?.position || "top-right") === toast?.position || "top-right");
+        const relevantToasts = toasts.filter(t => (t?.position || "top-right") === (toast?.position || "top-right"));
         const toastIndex = relevantToasts.findIndex((t) => t.toastId === toast.toastId);
         const toastsBefore = relevantToasts.filter((t, i) => i < toastIndex && t.visible).length;
 

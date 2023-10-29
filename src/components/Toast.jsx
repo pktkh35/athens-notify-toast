@@ -98,10 +98,14 @@ export const Toast = (toastData) => {
             </div>
             <div className="toast-info">
                 {
-                    toastData.title ? <div className="toast-title" dangerouslySetInnerHTML={{ __html: toastData.title }} /> : null
+                    toastData.title && typeof toastData.title !== "string" ? <div className="toast-title">
+                        {toastData.title}
+                    </div> : toastData.title && typeof toastData.title === "string" ? <div className="toast-title" dangerouslySetInnerHTML={{ __html: toastData.title }} /> : null
                 }
                 {
-                    toastData.description ? <div className="toast-description" dangerouslySetInnerHTML={{ __html: toastData.description }} /> : null
+                    toastData.description && typeof toastData.description !== "string" ? <div className="toast-description">
+                        {toastData.description}
+                    </div> : toastData.description && typeof toastData.description === "string" ? <div className="toast-description" dangerouslySetInnerHTML={{ __html: toastData.description }} /> : null
                 }
                 {
                     toastData.list ? <div className="toast-item-list">
@@ -112,7 +116,7 @@ export const Toast = (toastData) => {
                                         {getIcon({ type: item.type })}
                                     </div>
                                     <div className="text">
-                                        คุณ{(item.type === "success" ? "ได้รับ" : item.type === "error" ? "สูญเสีย" : "") + " " + item.label + " จำนวน "} <CountText pValue={item.countOld} value={item.count} type={item.itemType} />
+                                        คุณ{(item.type === "success" ? "ได้รับ" : item.type === "error" ? "สูญเสีย" : "") + " " + item.label + " จำนวน "} <CountText pValue={item.oldCount} value={item.count} type={item.itemType} />
                                     </div>
                                 </div>
                             })
