@@ -9,19 +9,20 @@
     "preview": "vite preview"
   },
   "main": "src/index.js",
-  "dependencies": {},
-  "devDependencies": {
-    "@reduxjs/toolkit": "^1.9.7",
-    "@types/react": "^18.0.27",
-    "@types/react-dom": "^18.0.10",
-    "@vitejs/plugin-react": "^3.1.0",
+  "dependencies": {
     "clsx": "^2.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.1.3",
     "sass": "^1.69.5",
-    "sass-loader": "^13.3.2",
-    "styled-components": "^6.1.0",
-    "vite": "^4.1.0"
+    "sass-loader": "^13.3.2"
+  },
+  "devDependencies": {
+    "clsx": "^2.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-redux": "^8.1.3",
+    "sass": "^1.69.5",
+    "sass-loader": "^13.3.2"
   }
 }
