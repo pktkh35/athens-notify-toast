@@ -113,8 +113,8 @@ toast.getByKeyName = (keyName, key) => {
   let toast = false;
 
   containers.forEach(container => {
-    if (container.getToastFromKeyName && container.getToastFromKeyName(keyName, key)) {
-      toast = true;
+    if (container.getToastFromKeyName) {
+      toast = container.getToastFromKeyName(keyName, key);
     }
   });
 
