@@ -17,7 +17,8 @@ export function useToastContainer(props) {
         props,
         containerId: null,
         isToastActive,
-        getToast: id => toasts.find(t => t.toastId === id)
+        getToast: id => toasts.find(t => t.toastId === id),
+        getToastFromKeyName: (keyName, key) => toasts.find(t => t[keyName] === key)
     }).current;
 
     useEffect(() => {
@@ -27,7 +28,6 @@ export function useToastContainer(props) {
             .on("Show", buildToast)
             .on("Clear", removeToast)
             .on("Remove", DismissToast)
-            .on("ClearWaitingQueue", clearWaitingQueue)
             .emit("DidMount", instance);
 
         return () => {
@@ -41,19 +41,10 @@ export function useToastContainer(props) {
         instance.displayedToast = toasts.length;
     }, [props, isToastActive, toasts]);
 
-    function clearWaitingQueue({ containerId }) {
-        const { limit } = instance.props;
-
-        if (limit && (!containerId || instance.containerId === containerId)) {
-            instance.count -= instance.queue.length;
-            instance.queue = [];
-        }
-    }
-
     function DismissToast(toastId) {
         UPDATE_TOAST({
             toastId,
-            visible: false,
+            hide: true,
         })
     }
 
@@ -61,24 +52,13 @@ export function useToastContainer(props) {
         REMOVE_TOAST(toastId);
 
         const queueLen = instance.queue.length;
-        instance.count = toastId == null ? instance.count - instance.displayedToast : instance.count - 1;
+        instance.count--;
 
         if (instance.count < 0) instance.count = 0;
 
         if (queueLen > 0) {
-            const freeSlot = toastId == null ? instance.props.limit : 1;
-
-            if (queueLen === 1 || freeSlot === 1) {
-                instance.displayedToast++;
-                dequeueToast();
-            } else {
-                const toDequeue = freeSlot > queueLen ? queueLen : freeSlot;
-                instance.displayedToast = toDequeue;
-
-                for (let i = 0; i < toDequeue; i++) dequeueToast();
-            }
-        } else {
-            forceUpdate();
+            instance.displayedToast++;
+            dequeueToast();
         }
     }
 
@@ -90,17 +70,17 @@ export function useToastContainer(props) {
     function buildToast(
         options
     ) {
-        const { toastId } = options;
+        const { toastId, priority } = options;
         const { props } = instance;
         instance.count++;
 
         let toast = {
-            // ...props,
             position: props.position,
             ...options,
             createdAt: Date.now(),
             toastId,
             key: options.key || instance.toastKey++,
+            priority: priority === "high" ? 2 : priority === "medium" ? 1 :0,
         };
 
         if (
@@ -120,7 +100,8 @@ export function useToastContainer(props) {
         const { toastId } = toastProps;
         const toast = {
             ...toastProps,
-            visible: false
+            visible: false,
+            hide: false,
         };
 
         ADD_TOAST({
@@ -152,18 +133,17 @@ export function useToastContainer(props) {
             toRender.get(position)?.push(toast);
         });
 
-        return Array.from(toRender, p => cb(p[0], p[1]));
+        const sortedToasts = Array.from(toRender, (p) => [p[0],p[1].sort((a, b) => b.priority - a.priority)]);
+
+        return sortedToasts.flatMap((p) => cb(p[0], p[1]));
     }
 
     const calculateOffset = useCallback(toast => {
-        const relevantToasts = toasts.filter(t => (t?.position || "top-right") === (toast?.position || "top-right"));
+        const relevantToasts = toasts.filter(t => (t?.position || "top-right") === (toast?.position || "top-right")).sort((a, b) => a.priority - b.priority);
         const toastIndex = relevantToasts.findIndex((t) => t.toastId === toast.toastId);
         const toastsBefore = relevantToasts.filter((t, i) => i < toastIndex && t.visible).length;
 
-        const offset = relevantToasts
-            .filter((t) => t.visible)
-            .slice(toastsBefore+1)
-            .reduce((acc, t) => acc + (t.height || 0) + 8, 0);
+        const offset = relevantToasts.filter((t) => t.visible).slice(toastsBefore + 1).reduce((acc, t) => acc + (t.height || 0) + 8, 0);
 
         return offset
     }, [toasts])

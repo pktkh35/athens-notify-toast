@@ -1,4 +1,4 @@
-@keyframes custom-enter-right {
+@keyframes athens-enter-right {
     0% {
         opacity: 0;
         transform: translate3d(1.5vmin, -0.0vmin, -0.1vmin);
@@ -9,7 +9,7 @@
     }
 }
 
-@keyframes custom-exit-right {
+@keyframes athens-exit-right {
     0% {
         opacity: 1;
         transform: translate3d(0, 0, -0.1vmin);
@@ -20,7 +20,7 @@
     }
 }
 
-@keyframes custom-enter-left {
+@keyframes athens-enter-left {
     0% {
         opacity: 0;
         transform: translate3d(-1.5vmin, -0.0vmin, -0.1vmin);
@@ -31,7 +31,7 @@
     }
 }
 
-@keyframes custom-exit-left {
+@keyframes athens-exit-left {
     0% {
         opacity: 1;
         transform: translate3d(0, 0, -0.1vmin);
@@ -42,7 +42,7 @@
     }
 }
 
-@keyframes custom-enter-center {
+@keyframes athens-enter-center {
     0% {
         opacity: 0;
         transform: translate3d(0, -0.0vmin, -0.1vmin);
@@ -53,7 +53,7 @@
     }
 }
 
-@keyframes custom-exit-center {
+@keyframes athens-exit-center {
     0% {
         opacity: 1;
         transform: translate3d(0, 0, -0.1vmin);
@@ -64,33 +64,24 @@
     }
 }
 
-@keyframes #{$rt-namespace}zoomIn {
+@keyframes athens-zoomIn {
     from {
         opacity: 0;
-        transform: scale3d(0.3, 0.3, 0.3);
+        scale: 50%;
     }
     50% {
         opacity: 1;
+        scale: 100%;
     }
 }
 
-@keyframes #{$rt-namespace}zoomOut {
+@keyframes athens-zoomOut {
     from {
         opacity: 1;
-    }
-    50% {
-        opacity: 0;
-        transform: scale3d(0.3, 0.3, 0.3);
+        scale: 100%;
     }
     to {
         opacity: 0;
+        scale: 50%;
     }
-}
-
-.#{$rt-namespace}zoom-enter {
-    animation: #{$rt-namespace}zoomIn .3s cubic-bezier(.21,1.02,.73,1) forwards;
-}
-
-.#{$rt-namespace}zoom-exit {
-    animation: #{$rt-namespace}zoomOut .3s cubic-bezier(.21,1.02,.73,1) forwards;
 }

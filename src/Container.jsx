@@ -8,7 +8,7 @@ const Container = (props) => {
         duration: 5000,
         role: 'alert',
         theme: 'light',
-        limit: 9
+        limit: 15
     });
 
     return <div

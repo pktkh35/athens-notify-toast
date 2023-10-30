@@ -88,12 +88,29 @@ export const Toast = (toastData) => {
             transform: `translateY(${offset * (top ? 1 : -1)}px)`,
             ...horizontalStyle,
             ...verticalStyle,
+            ...toastData.color ? { "--color": toastData.color } : {}
         }}
     >
         <div className="toast-content" ref={toastRef} style={{
-            animation: visible ? `custom-enter-${direction} 230ms cubic-bezier(.21,1.02,.73,1) forwards` : `custom-exit-${direction} 230ms cubic-bezier(.06,.71,.55,1) forwards`,
+            animationName: (visible && !toastData.hide) ? `athens-enter-${direction}` : `athens-exit-${direction}`,
+            animationTimingFunction: (visible && !toastData.hide) ? `cubic-bezier(.21,1.02,.73,1)` : `cubic-bezier(.21,1.02,.73,1)`,
+            animationFillMode: "forwards",
+            animationDuration: ".23s",
+            transition: ".23s",
+            transitionDelay: ".23s",
+            animationDelay: ".23s",
+            opacity: (visible) ? 1 : 0
         }}>
-            <div className="toast-icon">
+            <div className="toast-icon" style={{
+                animationName: (visible && !toastData.hide) ? `athens-zoomIn` : `athens-zoomOut`,
+                animationTimingFunction: (visible && !toastData.hide) ? `cubic-bezier(.21,1.02,.73,1)` : `cubic-bezier(.21,1.02,.73,1)`,
+                animationFillMode: "forwards",
+                animationDuration: ".4s",
+                transition: ".23s",
+                transitionDelay: (visible && !toastData.hide) ? ".23s" : "0s",
+                animationDelay: (visible && !toastData.hide) ? ".23s" : "0s",
+                opacity: (visible) ? 1 : 0
+            }}>
                 {toastData.icon ? toastData.icon : getIcon({ type })}
             </div>
             <div className="toast-info">

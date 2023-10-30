@@ -107,6 +107,21 @@ toast.dismiss = (id) => {
 };
 
 /**
+ * return toastData if one container is displaying the toast
+ */
+toast.getByKeyName = (keyName, key) => {
+  let toast = false;
+
+  containers.forEach(container => {
+    if (container.getToastFromKeyName && container.getToastFromKeyName(keyName, key)) {
+      toast = true;
+    }
+  });
+
+  return toast;
+}
+
+/**
  * return true if one container is displaying the toast
  */
 toast.isActive = (id) => {
