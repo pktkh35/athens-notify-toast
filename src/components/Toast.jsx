@@ -32,6 +32,7 @@ export const CountText = ({
     duration = 300,
     type
 }) => {
+    savedNumber.current = pValue;
     const savedNumber = useRef(pValue);
     const numberRef = useRef(null);
     const counterAnim = (qSelector, start = 0, end, duration = 350) => {
