@@ -29,13 +29,13 @@ const setCount = (count, type) => {
 export const CountText = ({
     pValue = 0,
     value,
-    duration = 300,
+    duration = 1500,
     type
 }) => {
     savedNumber.current = pValue;
     const savedNumber = useRef(pValue);
     const numberRef = useRef(null);
-    const counterAnim = (qSelector, start = 0, end, duration = 350) => {
+    const counterAnim = (qSelector, start = 0, end, duration = 1500) => {
         const target = qSelector.current;
         if (qSelector && target) {
             let startTimestamp = null;
