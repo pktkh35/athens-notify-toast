@@ -1,3 +1,4 @@
+import * as React from 'react';
 import React, { useCallback, useEffect, useRef } from 'react';
 import { getIcon } from './Icons';
 

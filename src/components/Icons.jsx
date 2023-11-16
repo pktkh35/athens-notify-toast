@@ -1,3 +1,4 @@
+import * as React from 'react';
 import React, { cloneElement, isValidElement } from 'react';
 import { isFn, isNum, isStr } from '../utils/propValidator';
 
