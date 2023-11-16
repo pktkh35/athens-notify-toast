@@ -1,12 +1,10 @@
-import { isValidElement, useCallback, useEffect, useReducer, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { eventManager } from "../core/eventManager"
 import { toast as TOASTS } from "../core/toast";
 import { ADD_TOAST, REMOVE_TOAST, UPDATE_TOAST } from "../store/store";
 import { useStore } from "../store/store";
 
 export function useToastContainer(props) {
-    const [, forceUpdate] = useReducer(x => x + 1, 0);
-    const containerRef = useRef(null);
     const toasts = useStore().toasts;
     const isToastActive = (id) => toasts.find(t => t.toastId === id)?.visible;
     const instance = useRef({
@@ -150,7 +148,6 @@ export function useToastContainer(props) {
 
     return {
         getToastToRender,
-        containerRef,
         updateHeightToast,
         calculateOffset,
     };
