@@ -1,5 +1,5 @@
 import * as React from 'react';
-import React, { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { getIcon } from './Icons';
 
 const formatMoney = (n, c, d, t) => {
