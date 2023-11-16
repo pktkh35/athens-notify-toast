@@ -1,7 +1,4 @@
 import React, { useCallback, useEffect, useRef } from 'react';
-import cx from 'clsx';
-
-import { isFn } from '../utils/propValidator';
 import { getIcon } from './Icons';
 
 const formatMoney = (n, c, d, t) => {
@@ -75,8 +72,6 @@ export const Toast = (toastData) => {
             updateHeightToast(toastId, height);
         }
     }, [toastId]);
-    const defaultClassName = cx(`athens-toast`, `athens-toast-${type}`);
-    const cssClasses = isFn(className) ? className({ position, type, defaultClassName }) : cx(defaultClassName, className);
     const direction = position ? (position.includes("right") ? 'right' : position && position.includes("left") ? 'left' : 'center') : 'right';
     const top = position.includes('top');
     const verticalStyle = top ? { top: 0 } : { bottom: 0 };
@@ -84,7 +79,7 @@ export const Toast = (toastData) => {
 
     return <div
         id={toastId}
-        className={cssClasses}
+        className={`athens-toast athens-toast-${type}`}
         style={{
             transform: `translateY(${offset * (top ? 1 : -1)}px)`,
             ...horizontalStyle,
