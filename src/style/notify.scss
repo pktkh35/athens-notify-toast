@@ -20,18 +20,18 @@ $background: #181818;
     right: 0;
     display: flex;
     transition: all 230ms cubic-bezier(0.21, 1.02, 0.73, 1);
-    --color: #82DFF0;
+    --color: #54a0ff;
 
     &.athens-toast-success {
-        --color: #56C568;
+        --color: #30cb83;
     }
 
     &.athens-toast-error {
-        --color: #C55656;
+        --color: #e74c3c;
     }
 
     &.athens-toast-warning {
-        --color: #C5B356;
+        --color: #f39c12;
     }
 
     .toast-content {
