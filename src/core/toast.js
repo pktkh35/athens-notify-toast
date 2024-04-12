@@ -45,6 +45,7 @@ function mergeOptions(type, options) {
   return {
     ...options,
     type: (options && options.type) || type,
+    title: (options && options.title) || "System",
     toastId: getToastId(options)
   };
 }

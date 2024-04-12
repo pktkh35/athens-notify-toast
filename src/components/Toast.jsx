@@ -30,7 +30,6 @@ export const CountText = ({
     duration = 1500,
     type
 }) => {
-    savedNumber.current = pValue;
     const savedNumber = useRef(pValue);
     const numberRef = useRef(null);
     const counterAnim = (qSelector, start = 0, end, duration = 1500) => {
@@ -48,6 +47,8 @@ export const CountText = ({
             window.requestAnimationFrame(step);
         }
     };
+
+    savedNumber.current = pValue;
 
     useEffect(() => {
         counterAnim(numberRef, savedNumber.current, value, duration)
@@ -98,18 +99,6 @@ export const Toast = (toastData) => {
             animationDelay: ".23s",
             opacity: (visible) ? 1 : 0
         }}>
-            <div className="toast-icon" style={{
-                animationName: (visible && !toastData.hide) ? `athens-zoomIn` : `athens-zoomOut`,
-                animationTimingFunction: (visible && !toastData.hide) ? `cubic-bezier(.21,1.02,.73,1)` : `cubic-bezier(.21,1.02,.73,1)`,
-                animationFillMode: "forwards",
-                animationDuration: ".4s",
-                transition: ".23s",
-                transitionDelay: (visible && !toastData.hide) ? ".23s" : "0s",
-                animationDelay: (visible && !toastData.hide) ? ".23s" : "0s",
-                opacity: (visible) ? 1 : 0
-            }}>
-                {toastData.icon ? toastData.icon : getIcon({ type })}
-            </div>
             <div className="toast-info">
                 {
                     toastData.title && typeof toastData.title !== "string" ? <div className="toast-title">
@@ -130,13 +119,31 @@ export const Toast = (toastData) => {
                                         {getIcon({ type: item.type })}
                                     </div>
                                     <div className="text">
-                                        คุณ{(item.type === "success" ? "ได้รับ" : item.type === "error" ? "สูญเสีย" : "") + " " + item.label + " จำนวน "} <CountText pValue={item.oldCount} value={item.count} type={item.itemType} />
+                                        คุณ{(item.type === "success" ? "ได้รับ" : item.type === "error" ? "สูญเสีย" : "") + " " + item.label + " จำนวน "} <CountText pValue={item.oldCount || 0} value={item.count} type={item.itemType} />
                                     </div>
                                 </div>
                             })
                         }
                     </div> : null
                 }
+            </div>
+            <div className="toast-icon" style={{
+                transition: ".23s",
+                animationDelay: (visible && !toastData.hide) ? ".23s" : "0s",
+                opacity: (visible) ? 1 : 0
+            }}>
+                <div style={{
+                    animationName: (visible && !toastData.hide) ? `athens-zoomIn` : `athens-zoomOut`,
+                    animationTimingFunction: (visible && !toastData.hide) ? `cubic-bezier(.21,1.02,.73,1)` : `cubic-bezier(.21,1.02,.73,1)`,
+                    animationFillMode: "forwards",
+                    animationDuration: ".4s",
+                    animationDelay: (visible && !toastData.hide) ? ".23s" : "0s",
+                }}>
+                    {toastData.icon ? toastData.icon : getIcon({ type })}
+                </div>
+            </div>
+            <div className="toast-progressbar">
+                <div className="bar" style={{ animation: `barLoading ${toastData.duration}ms linear forwards` }} />
             </div>
         </div>
     </div>;
